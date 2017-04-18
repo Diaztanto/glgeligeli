@@ -151,6 +151,8 @@ void display()
 	//rainbow
 	drawRainbow();
 	
+	drawCircle(253, 184, 19, 255, 253, 184, 19, 0, 300, 500, 500, 20);
+	
 	//gambar spike di sekitar matahari
 	glBegin (GL_TRIANGLE_FAN);
 	numPoints = 10;
@@ -174,6 +176,7 @@ void display()
 	
 	//gambar lingkaran matahari
 	drawCircle(255, 102, 0, 255, 253, 184, 19, 255, 75, 500, 500, 20);
+	
 	
 	//drawMountains
 	drawMountains();
