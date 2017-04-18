@@ -1,8 +1,8 @@
+#include <stdio.h>
+#include <unistd.h>
 #include <GL/glut.h>
 #include <GL/GL.h>
 #include <math.h>
-#include <stdio.h>
-#include <unistd.h>
 
 const float DegToRad = 3.14159 / 180;
 
@@ -53,6 +53,38 @@ void drawFilledSun(){
 	//draw circle
 }
 
+void drawMountains(){
+	//gambar gunung1
+	glBegin(GL_POLYGON);
+	
+	glColor3f(0.0, 1.0, 0.0);
+	glVertex2f(400,0);
+	float w=640.0;
+	float y=0.0;
+	for(float x=0.0;-x*x/100+4*x>=0;x++) {
+		y=-x*x/100+4*x;
+		if(x>w/4-10) glColor3f(0.83, 1.0, 0.47);
+		else glColor3f(0.0, 1.0, 0.0);
+		glVertex2f(x,y);
+	}
+	
+	glEnd();
+	
+	//gambargunung2
+	glBegin(GL_POLYGON);
+	
+	glColor3f(0.0, 1.0, 0.0);
+	glVertex2f(320,0);
+	for(float x=0.0;-x*x/80+4*x>=0;x++) {
+		y=-x*x/80+4*x;
+		if(x<w/4+10) glColor3f(0.83, 1.0, 0.47);
+		else glColor3f(0.15, 1.0, 0.15);
+		glVertex2f(x+w/2,y);
+	}
+	
+	glEnd();
+}
+
 void display()
 {
 	
@@ -92,6 +124,9 @@ void display()
 	
 	//draw tree
 	drawTree();
+	
+	//draw gunung
+	drawMountains();
 	/*
 	radius = 75;
 	glBegin (GL_TRIANGLE_FAN);
