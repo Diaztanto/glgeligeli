@@ -4,25 +4,53 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void drawFilledSun(){
-    //static float angle;
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
-    glTranslatef(0, 0, -10);
-    int i, x, y;
-    double radius = 0.30;
-    //glColor3ub(253, 184, 19);     
-    glColor3ub(255, 0, 0);
-    double twicePi = 2.0 * 3.142;
-    x = 0, y = 0;
-    glBegin(GL_TRIANGLE_FAN); //BEGIN CIRCLE
-    glVertex2f(x, y); // center of circle
-    for (i = 0; i <= 20; i++)   {
-        glVertex2f (
-            (x + (radius * cos(i * twicePi / 20))), (y + (radius * sin(i * twicePi / 20)))
-            );
+const float DegToRad = 3.14159 / 180;
+
+void drawCircle(int r, int g, int b, int radii, int x, int y, int edges) {
+	int radius = radii;
+	int cx = x;
+	int cy = y;
+	int numPoints = edges;
+	
+	glBegin (GL_TRIANGLE_FAN);
+	//int count = 1;
+	
+	glColor3f((float)r/255,(float)g/255,(float)b/255);
+
+    glVertex2f(cx, cy);
+	
+	for (int i = 0; i <= 360; i+=360/(numPoints*2)) {
+        float DegInRad = i * DegToRad;
+
+		glColor3f((float)253/255,(float)184/255,(float)19/255);
+		glVertex2d ((cx + cos (DegInRad) * radius/2), (cy + sin (DegInRad) * radius/2));
+
+		//count++;
     }
-    glEnd(); //END
+
+	glEnd();
+}
+
+void drawTree() {
+	//draw stem
+	glBegin(GL_QUADS);
+	glColor3f((float)178/255, (float)34/255, (float)34/255);
+	glVertex2f(98, 0);
+	glVertex2f(108, 0);
+	glVertex2f(108, 100);
+	glVertex2f(98, 100);
+	glEnd();
+	
+	//draw leaves
+	drawCircle(0, 255, 0, 30, 80, 45, 20);
+	drawCircle(0, 255, 0, 100, 100, 100, 20);
+	drawCircle(0, 255, 0, 50, 140, 60, 20);
+}
+
+void drawFilledSun(){
+    //draw spikes
+	
+	//draw circle
 }
 
 void display()
@@ -31,73 +59,59 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	/*
-	//gambar pohon sederhana berbentuk panah ke atas
-	glBegin(GL_POLYGON);
-	
-	glColor3f(0.0, 1.0, 0.0);
-
-	glVertex2f(60,20);
-	glVertex2f(80,20);
-	glVertex2f(80,0);
-	
-	glVertex2f(120,0);
-	glVertex2f(120,20);
-	glVertex2f(140,20);
-	
-	glVertex2f(100,100);
-
-	glEnd();
-	*/
-
 
 	GLfloat cx=320,cy=400,radius = 85;
 	int numPoints;
+	int count = 1;
 
-	const float DegToRad = 3.14159 / 180;
+	
+	
+	//gambar spike di sekitar matahari
+	glBegin (GL_TRIANGLE_FAN);
+	numPoints = 10;
+	glColor3f((float)253/255,(float)184/255,(float)19/255);
+    
+	glVertex2f(cx, cy);
+	for (int i = 0; i <= 360; i+=360/(numPoints*2)) {
+		float DegInRad = i * DegToRad;
+		if(count%2!=0){
+			glColor3f(1,1,1);
+			glVertex2d (cx + cos (DegInRad) * (radius+radius)/2, cy + sin (DegInRad) * (radius+radius)/2);
+		} else {
+			glColor3f((float)253/255,(float)184/255,(float)19/255);
+			glVertex2d ((cx + cos (DegInRad) * radius/2), (cy + sin (DegInRad) * radius/2));
+		}	
+		count++;
+	}
 
-  glBegin (GL_TRIANGLE_FAN);
-	  int count = 1;
-	  numPoints = 10;
+	glEnd();
+	
+	
+	//gambar lingkaran matahari
+	drawCircle(255, 102, 0, 75, 320, 400, 20);
+	
+	//draw tree
+	drawTree();
+	/*
+	radius = 75;
+	glBegin (GL_TRIANGLE_FAN);
+	count = 1;
+	numPoints = 20;
+	glColor3f((float)255/255,(float)102/255,0);
+
+    glVertex2f(cx, cy);
+	
+	for (int i = 0; i <= 360; i+=360/(numPoints*2)) {
+        float DegInRad = i * DegToRad;
+
 		glColor3f((float)253/255,(float)184/255,(float)19/255);
-    glVertex2f(cx, cy);
-      for (int i = 0; i <= 360; i+=360/(numPoints*2)) {
-        float DegInRad = i * DegToRad;
-        if(count%2!=0){
-        		glColor3f(1,1,1);
-            glVertex2d (cx + cos (DegInRad) * (radius+radius)/2, cy + sin (DegInRad) * (radius+radius)/2);
-        } else {
-        		
-        		glColor3f((float)253/255,(float)184/255,(float)19/255);
-            glVertex2d ((cx + cos (DegInRad) * radius/2), (cy + sin (DegInRad) * radius/2));
-        }	
-   		 count++;
-      }
+		glVertex2d ((cx + cos (DegInRad) * radius/2), (cy + sin (DegInRad) * radius/2));
 
-  glEnd();
+		count++;
+    }
 
-  radius = 75;
-  glBegin (GL_TRIANGLE_FAN);
-	  count = 1;
-	  numPoints = 20;
-		glColor3f((float)255/255,(float)102/255,0);
-    glVertex2f(cx, cy);
-      for (int i = 0; i <= 360; i+=360/(numPoints*2)) {
-        float DegInRad = i * DegToRad;
-        //if(count%2!=0){
-        		// glColor3f(1,1,1);
-            // glVertex2d (cx + cos (DegInRad) * radius, cy + sin (DegInRad) * radius);
-        //} else {
-        		
-        		glColor3f((float)253/255,(float)184/255,(float)19/255);
-            glVertex2d ((cx + cos (DegInRad) * radius/2), (cy + sin (DegInRad) * radius/2));
-        //}	
-   		 count++;
-      }
-
-  glEnd();
- 
+	glEnd();
+	*/
 	glFlush();
 	glutSwapBuffers();
 	
