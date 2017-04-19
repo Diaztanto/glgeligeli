@@ -222,8 +222,6 @@ void display()
 	//draw tree
 	drawTree();
 	
-	//draw gunung
-	// drawMountains();
 	/*
 	radius = 75;
 	glBegin (GL_TRIANGLE_FAN);
