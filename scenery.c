@@ -56,7 +56,7 @@ void drawTree() {
 	drawCircle(0, 255, 0, 255, 0, 40, 0, 255, 100, 500, 100, 20);
 	drawCircle(0, 255, 0, 255, 0, 40, 0, 255, 50, 540, 60, 20);
 }
-
+/*
 void drawMountains() {
 	
 	//draw mountain 2
@@ -83,7 +83,7 @@ void drawMountains() {
 	glVertex2f(400,0);
 	glVertex2f(0,100);
 	glEnd();
-}
+} */
 
 void washColor(int radii, int x, int y) {
 	drawCircle(255,255,255,255, 255,255,255,0, radii,x,y,20);
@@ -96,36 +96,41 @@ void washColor(int radii, int x, int y) {
 }
 
 void drawRainbow() {
+
+	int x=0,y=120;
+
 	//sky
-	drawCircle(255,255,255,255, 127,255,255,255, 2000, -40,-40,20);
+	drawCircle(255,255,255,255, 127,255,255,255, 2000, x,y,20);
 	
 	//red
-	drawCircle(255,0,0,255, 255,0,0,0, 1000,-40,-40,20);
-	washColor(950, -40, -40);
+	drawCircle(255,0,0,255, 255,0,0,0, 1000,x,y,20);
+	washColor(950, x, y);
 	
 	//orange
-	drawCircle(255,99,71,255, 255,99,71,0, 950,-40,-40,20);
-	washColor(900, -40, -40);
+	drawCircle(255,99,71,255, 255,99,71,0, 950,x,y,20);
+	washColor(900, x, y);
 	
 	//yellow
-	drawCircle(255,255,0,255, 255,255,0,0, 900,-40,-40,20);
-	washColor(850, -40, -40);
+	drawCircle(255,255,0,255, 255,255,0,0, 900,x,y,20);
+	washColor(850, x, y);
 	
 	//green
-	drawCircle(0,255,0,255, 0,255,0,0, 850,-40,-40,20);
-	washColor(800, -40, -40);
+	drawCircle(0,255,0,255, 0,255,0,0, 850,x,y,20);
+	washColor(800, x, y);
 	
 	//blue
-	drawCircle(0,0,255,255, 0,0,255,0, 800,-40,-40,20);
-	washColor(750, -40, -40);
+	drawCircle(0,0,255,255, 0,0,255,0, 800,x,y,20);
+	washColor(750, x, y);
 	
 	//indigo
-	drawCircle(127,0,255,255, 127,0,255,0, 750,-40,-40,20);
-	washColor(700, -40, -40);
+	drawCircle(127,0,255,255, 127,0,255,0, 750,x,y,20);
+	washColor(700, x, y);
 	
 	//purple
-	drawCircle(255,0,255,255, 255,0,255,0, 700,-40,-40,20);
-	washColor(650, -40, -40);
+	drawCircle(255,0,255,255, 255,0,255,0, 700,x,y,20);
+	washColor(650, x, y);
+
+	drawCircle(128,255,255,255, 128,255,255,0, 650,x,y,20);
 	
 }
 
@@ -179,7 +184,8 @@ void display()
 	int numPoints;
 	int count = 1;
 
-	
+	drawCircle(128, 255, 255, 255, 128, 255, 255, 0, 3000, 500, 500, 20);
+
 	//rainbow
 	drawRainbow();
 	
@@ -217,7 +223,7 @@ void display()
 	drawTree();
 	
 	//draw gunung
-	drawMountains();
+	// drawMountains();
 	/*
 	radius = 75;
 	glBegin (GL_TRIANGLE_FAN);
