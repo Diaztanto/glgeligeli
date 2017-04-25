@@ -1,6 +1,7 @@
 #include <GL/glut.h>
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 // angle of rotation for the camera direction
 float angle=0.0, vangle=0.0;
@@ -10,6 +11,8 @@ float lx=0.0f, ly=0.0f, lz=-1.0f;
 float x=0.0f, y=1.0f, z=5.0f;
 
 float fraction = 0.1f;
+
+GLuint texture;
 
 void drawSkybox() {
 	glColor3f(0.9f, 0.9f, 0.9f);
@@ -55,6 +58,97 @@ void drawSkybox() {
 	glEnd();
 }
 
+
+
+GLuint LoadTexture( const char * filename )
+{
+
+  GLuint texture;
+
+  int width, height;
+
+  unsigned char * data;
+
+  FILE * file;
+
+  file = fopen( filename, "rb" );
+
+  if ( file == NULL ) return 0;
+  width = 1024;
+  height = 512;
+  data = (unsigned char *)malloc( width * height * 3 );
+  //int size = fseek(file,);
+  fread( data, width * height * 3, 1, file );
+  fclose( file );
+
+ for(int i = 0; i < width * height ; ++i)
+	{
+	   int index = i*3;
+	   unsigned char B,R;
+	   B = data[index];
+	   R = data[index+2];
+
+	   data[index] = R;
+	   data[index+2] = B;
+
+	}
+
+
+	glGenTextures( 1, &texture );
+	glBindTexture( GL_TEXTURE_2D, texture );
+	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_MODULATE );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST );
+
+
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_REPEAT );
+	gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height,GL_RGB, GL_UNSIGNED_BYTE, data );
+	free( data );
+
+	return texture;
+}
+
+void drawHape() {
+	 glEnable(GL_TEXTURE_2D);
+	 
+	glColor3f(0.0f, 0.0f, 0.0f);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	/*
+	glBegin(GL_QUADS);
+		glTexCoord2f(0,0);
+		glVertex3f(-6.0f, 10.0f, -20.0f);
+		glTexCoord2f(1,0);
+		glVertex3f(6.0f, 10.0f, -20.0f);
+		glTexCoord2f(1,1);
+		glVertex3f(6.0f, -10.0f, -20.0f);
+		glTexCoord2f(0,1);
+		glVertex3f(-6.0f, -10.0f, -20.0f);
+	glEnd();
+	glDisable(GL_TEXTURE_2D); */
+	
+// Right
+double c[] = {-6.0, 10.0, -20.0};
+double b[] = {6.0f, 10.0f, -20.0f};
+double f[] = {6.0f, -10.0f, -20.0f};
+double g[] = {-6.0f, -10.0f, -20.0f};
+
+glBegin(GL_QUADS);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+glNormal3d(1, 0, 0);
+glTexCoord2f(0, 1);
+glVertex3dv(c);
+glTexCoord2f(0, 0);
+glVertex3dv(b);
+glTexCoord2f(1, 0);
+glVertex3dv(f);
+glTexCoord2f(1, 1);
+glVertex3dv(g);
+glEnd();
+
+glDisable(GL_TEXTURE_2D); 
+}
+
 void renderScene(void) {
 
 	// Clear Color and Depth Buffers
@@ -70,6 +164,9 @@ void renderScene(void) {
 
     // Draw skybox
 	drawSkybox();
+	
+	// Draw hape
+	drawHape();
 	
 	glutSwapBuffers();
 }
@@ -156,6 +253,7 @@ int main(int argc, char **argv) {
 	glutInitWindowPosition(100,100);
 	glutInitWindowSize(320,320);
 	glutCreateWindow("OpenGL");
+	texture = LoadTexture("android.bmp");
 
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
