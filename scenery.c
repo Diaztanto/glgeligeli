@@ -13,7 +13,6 @@ void drawCircle(int r1, int g1, int b1, int a1, int r2, int g2, int b2, int a2, 
 	int numPoints = edges;
 	
 	glBegin (GL_TRIANGLE_FAN);
-	//int count = 1;
 	
 	glColor4f((float)r1/255,(float)g1/255,(float)b1/255, (float)a1/255);
 
@@ -56,35 +55,7 @@ void drawTree() {
 	drawCircle(0, 255, 0, 255, 0, 40, 0, 255, 100, 500, 100, 20);
 	drawCircle(0, 255, 0, 255, 0, 40, 0, 255, 50, 540, 60, 20);
 }
-/*
-void drawMountains() {
-	
-	//draw mountain 2
-	glBegin(GL_TRIANGLES);
-	glColor3d(0,1,0);
-	glVertex2f(640,0);
-	glVertex2f(-40,0);
-	glVertex2f(640,300);
-	glEnd();
-	
-	//drawMountain Shadow
-	glBegin(GL_TRIANGLES);
-	glColor4d(0,0,0,1);
-	glVertex2f(0,0);
-	glColor4d(1,1,1,0);
-	glVertex2f(1000,0);
-	glVertex2f(0,130);
-	glEnd();
-	
-	//draw mountain 1
-	glBegin(GL_TRIANGLES);
-	glColor3d(0,1,0);
-	glVertex2f(0,0);
-	glVertex2f(400,0);
-	glVertex2f(0,100);
-	glEnd();
-}
-*/
+
 void washColor(int radii, int x, int y) {
 	drawCircle(255,255,255,255, 255,255,255,0, radii,x,y,20);
 	drawCircle(255,255,255,255, 255,255,255,0, radii,x,y,20);
@@ -129,13 +100,6 @@ void drawRainbow() {
 	
 }
 
-
-void drawFilledSun(){
-    //draw spikes
-	
-	//draw circle
-}
-
 void drawMountains(){
 	//gambar gunung1
 	glBegin(GL_POLYGON);
@@ -170,7 +134,6 @@ void drawMountains(){
 
 void display()
 {
-	
 	glClear(GL_COLOR_BUFFER_BIT);
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -208,52 +171,15 @@ void display()
 	
 	//gambar lingkaran matahari
 	drawCircle(255, 102, 0, 255, 253, 184, 19, 255, 75, 500, 500, 20);
-	
-	
+		
 	//drawMountains
 	drawMountains();
 	
 	//draw tree
 	drawTree();
-	
-	//draw gunung
-	//drawMountains();
-	/*
-	radius = 75;
-	glBegin (GL_TRIANGLE_FAN);
-	count = 1;
-	numPoints = 20;
-	glColor3f((float)255/255,(float)102/255,0);
 
-    glVertex2f(cx, cy);
-	
-	for (int i = 0; i <= 360; i+=360/(numPoints*2)) {
-        float DegInRad = i * DegToRad;
-
-		glColor3f((float)253/255,(float)184/255,(float)19/255);
-		glVertex2d ((cx + cos (DegInRad) * radius/2), (cy + sin (DegInRad) * radius/2));
-
-		count++;
-    }
-
-	glEnd();
-	*/
 	glFlush();
 	glutSwapBuffers();
-	
-	
-	/*
-	glClear(GL_COLOR_BUFFER_BIT); //glclear bersihin buffer, color buffer is color buffer
-	glColor3f(1,1,0); //warna kotak di dalem
-	glBegin(GL_POLYGON); 
-	glVertex2f(100,300);
-	glVertex2f(100,100);
-	glVertex2f(200,100);
-	//glVertex2f(200,300);
-	glEnd(); glFlush();
-	glutSwapBuffers();
-	*/
-	
 }
 
 
