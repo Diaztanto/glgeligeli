@@ -11,47 +11,7 @@ float x=0.0f, y=1.0f, z=5.0f;
 
 float fraction = 0.1f;
 
-void drawSnowMan() {
-
-	glColor3f(1.0f, 1.0f, 0.0f);
-
-// Draw Body
-	glTranslatef(0.0f ,0.75f, 0.0f);
-	glutSolidSphere(0.75f,20,20);
-
-// Draw Head
-	glTranslatef(0.0f, 1.0f, 0.0f);
-	//glutSolidSphere(0.25f,20,20);
-	glutSolidCube(0.25f);
-
-// Draw Eyes
-	glPushMatrix();
-	glColor3f(0.0f,0.0f,0.0f);
-	glTranslatef(0.05f, 0.10f, 0.18f);
-	glutSolidSphere(0.05f,10,10);
-	glTranslatef(-0.1f, 0.0f, 0.0f);
-	glutSolidSphere(0.05f,10,10);
-	glPopMatrix();
-
-// Draw Nose
-	glColor3f(1.0f, 0.5f , 0.5f);
-	glutSolidCone(0.08f,0.5f,10,2);
-}
-
-void renderScene(void) {
-
-	// Clear Color and Depth Buffers
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Reset transformations
-	glLoadIdentity();
-	// Set the camera
-	gluLookAt(x, y, z,
-			x+lx, y+ly,  z+lz,
-			0.0f, 1.0f,  0.0f);
-
-    // Draw skybox
+void drawSkybox() {
 	glColor3f(0.9f, 0.9f, 0.9f);
 	glBegin(GL_QUADS);
 		glVertex3f(-50.0f, -50.0f, -50.0f);
@@ -93,15 +53,24 @@ void renderScene(void) {
 		glVertex3f( 50.0f, 50.0f,  50.0f);
 		glVertex3f( -50.0f, 50.0f, 50.0f);
 	glEnd();
-	
-        // Draw 36 SnowMen
-	
-			//glPushMatrix();
-			//glTranslatef(10.0,0,10.0);
-			drawSnowMan();
-			//glPopMatrix();
-		
+}
 
+void renderScene(void) {
+
+	// Clear Color and Depth Buffers
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Reset transformations
+	glLoadIdentity();
+	// Set the camera
+	gluLookAt(x, y, z,
+			x+lx, y+ly,  z+lz,
+			0.0f, 1.0f,  0.0f);
+
+    // Draw skybox
+	drawSkybox();
+	
 	glutSwapBuffers();
 }
 
