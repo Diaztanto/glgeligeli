@@ -12,7 +12,7 @@ float x=0.0f, y=1.0f, z=5.0f;
 
 float fraction = 0.1f;
 
-GLuint texture;
+GLuint texture[1];
 
 void drawSkybox() {
 	glColor3f(0.9f, 0.9f, 0.9f);
@@ -62,26 +62,29 @@ void drawSkybox() {
 
 GLuint LoadTexture( const char * filename )
 {
+	GLuint texture;
 
-  GLuint texture;
+	unsigned char data0[54];
 
-  int width, height;
+	int width, height;
 
-  unsigned char * data;
+	unsigned char * data;
 
-  FILE * file;
+	FILE * file;
 
-  file = fopen( filename, "rb" );
+	file = fopen( filename, "rb" );
 
-  if ( file == NULL ) return 0;
-  width = 1024;
-  height = 512;
-  data = (unsigned char *)malloc( width * height * 3 );
-  //int size = fseek(file,);
-  fread( data, width * height * 3, 1, file );
-  fclose( file );
+	if ( file == NULL ) return 0;
+	width = 512;
+	height = 512;
+	data = (unsigned char *)malloc( width * height * 3 );
+	//int size = fseek(file,);
+	fread(data0, 1, 54, file);
+	fread( data, 1, (width * height * 3), file );
+	fclose( file );
 
- for(int i = 0; i < width * height ; ++i)
+	
+	for(int i = 0; i < width * height ; ++i)
 	{
 	   int index = i*3;
 	   unsigned char B,R;
@@ -90,31 +93,32 @@ GLuint LoadTexture( const char * filename )
 
 	   data[index] = R;
 	   data[index+2] = B;
-
 	}
-
+	
 
 	glGenTextures( 1, &texture );
 	glBindTexture( GL_TEXTURE_2D, texture );
+	
 	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_MODULATE );
+	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	
 	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST );
-
 
 	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR );
 	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT );
 	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_REPEAT );
-	gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height,GL_RGB, GL_UNSIGNED_BYTE, data );
+	//gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height,GL_RGB, GL_UNSIGNED_BYTE, data );
 	free( data );
 
 	return texture;
 }
 
 void drawHape() {
-	 glEnable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);
 	 
 	glColor3f(0.0f, 0.0f, 0.0f);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	/*
+	glBindTexture(GL_TEXTURE_2D, texture[0]);
+	
 	glBegin(GL_QUADS);
 		glTexCoord2f(0,0);
 		glVertex3f(-6.0f, 10.0f, -20.0f);
@@ -125,28 +129,68 @@ void drawHape() {
 		glTexCoord2f(0,1);
 		glVertex3f(-6.0f, -10.0f, -20.0f);
 	glEnd();
-	glDisable(GL_TEXTURE_2D); */
+	glDisable(GL_TEXTURE_2D);
+	glBegin(GL_QUADS);
+		glVertex3f(-6.0f, 10.0f, -21.0f);
+		glVertex3f(6.0f, 10.0f, -21.0f);
+		glVertex3f(6.0f, -10.0f, -21.0f);
+		glVertex3f(-6.0f, -10.0f, -21.0f);
+	glEnd();
 	
-// Right
-double c[] = {-6.0, 10.0, -20.0};
-double b[] = {6.0f, 10.0f, -20.0f};
-double f[] = {6.0f, -10.0f, -20.0f};
-double g[] = {-6.0f, -10.0f, -20.0f};
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glBegin(GL_QUADS);
+		glVertex3f(6.0f, 10.0f, -20.0f);
+		glVertex3f(6.0f, 10.0f, -21.0f);
+		glVertex3f(6.0f, -10.0f, -21.0f);
+		glVertex3f(6.0f, -10.0f, -20.0f);
+	glEnd();
+	glBegin(GL_QUADS);
+		glVertex3f(-6.0f, 10.0f, -20.0f);
+		glVertex3f(-6.0f, 10.0f, -21.0f);
+		glVertex3f(-6.0f, -10.0f, -21.0f);
+		glVertex3f(-6.0f, -10.0f, -20.0f);
+	glEnd();
+	
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glBegin(GL_QUADS);
+		glVertex3f(6.0f, 10.0f, -20.0f);
+		glVertex3f(6.0f, 10.0f, -21.0f);
+		glVertex3f(-6.0f, 10.0f, -21.0f);
+		glVertex3f(-6.0f, 10.0f, -20.0f);
+	glEnd();
+	glBegin(GL_QUADS);
+		glVertex3f(6.0f, -10.0f, -20.0f);
+		glVertex3f(6.0f, -10.0f, -21.0f);
+		glVertex3f(-6.0f, -10.0f, -21.0f);
+		glVertex3f(-6.0f, -10.0f, -20.0f);
+	glEnd();
+	
+	/*
+	double c[] = {-6.0, 6.0, -20.0};
+	double b[] = {6.0, 6.0, -20.0};
+	double f[] = {6.0, -6.0, -20.0};
+	double g[] = {-6.0, -6.0, -20.0};
+	
+	glBegin(GL_QUADS);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		//glNormal3d(1, 0, 0);
+		
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3dv(g);
 
-glBegin(GL_QUADS);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-glNormal3d(1, 0, 0);
-glTexCoord2f(0, 1);
-glVertex3dv(c);
-glTexCoord2f(0, 0);
-glVertex3dv(b);
-glTexCoord2f(1, 0);
-glVertex3dv(f);
-glTexCoord2f(1, 1);
-glVertex3dv(g);
-glEnd();
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3dv(f);
 
-glDisable(GL_TEXTURE_2D); 
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3dv(b);
+		
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3dv(c);
+		
+	glEnd();
+	
+	glDisable(GL_TEXTURE_2D); 
+	*/
 }
 
 void renderScene(void) {
@@ -161,7 +205,7 @@ void renderScene(void) {
 	gluLookAt(x, y, z,
 			x+lx, y+ly,  z+lz,
 			0.0f, 1.0f,  0.0f);
-
+	
     // Draw skybox
 	drawSkybox();
 	
@@ -253,7 +297,7 @@ int main(int argc, char **argv) {
 	glutInitWindowPosition(100,100);
 	glutInitWindowSize(320,320);
 	glutCreateWindow("OpenGL");
-	texture = LoadTexture("android.bmp");
+	texture[0] = LoadTexture("lenovo.bmp");
 
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
